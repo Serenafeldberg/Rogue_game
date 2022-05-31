@@ -4,6 +4,7 @@ import random
 import mapping
 import player
 import gnome
+from human import Human
 import items
 
 
@@ -18,14 +19,14 @@ def clip(value: numeric, minimum: numeric, maximum: numeric) -> numeric:
     return value
 
 
-def attack(dungeon, player): # completar
+def attack(dungeon: mapping.Dungeon, player: player.Player, gnome: gnome.Gnome): # completar
     #if the human has weapon gnome dies, else takes away hp from gnome
     if Human.weapon == True:
-        Gnome.hp = 0
-        Gnome.set_is_alive()
+        gnome.hp = 0
+        gnome.set_is_alive()
     else:
-        Gnome.hp -= 25
-        Gnome.set_is_alive()
+        gnome.hp -= 25
+        gnome.set_is_alive()
 
 
 def move_to(dungeon: mapping.Dungeon, player: player.Player, location: tuple[numeric, numeric]):
