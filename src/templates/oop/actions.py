@@ -34,17 +34,22 @@ def move (dungeon: mapping.Dungeon, player: player.Player, key, pickaxe_tool = F
         if dungeon.is_walkable(new_loc):
             player.move_to(new_loc)
         if pickaxe_tool and dungeon.loc(new_loc) == mapping.WALL:
+            print(pickaxe_tool)
             dungeon.dig(new_loc)
             player.move_to(new_loc)
 
 def climb_stair(dungeon: mapping.Dungeon, player: player.Player):
     if dungeon.loc(player.loc()) == mapping.STAIR_UP:
-        dungeon.level += 1
+        dungeon.level -= 1
+    loc = dungeon.index(mapping.STAIR_DOWN)
+    player.move_to (loc)
     return dungeon
 
 def descend_stair(dungeon: mapping.Dungeon, player: player.Player):
-    if dungeon.loc(player.loc()) == mapping.STAIR_UP:
-        dungeon.level -= 1
+    if dungeon.loc(player.loc()) == mapping.STAIR_DOWN:
+        dungeon.level += 1
+    loc = dungeon.index(mapping.STAIR_UP)
+    player.move_to (loc)
     return dungeon
 
 

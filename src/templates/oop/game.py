@@ -5,6 +5,7 @@ import magic
 
 import random
 from human import Human
+from gnome import Gnome
 from items import Item, PickAxe
 import actions
 
@@ -17,15 +18,16 @@ if __name__ == "__main__":
     # initial parameters
     level = 0
     name = input("Enter name: ")
-    player = Human (name, (20,9))
     pickaxe = PickAxe ('pickaxe', ')')
 
     # initial locations may be random generated
-    gnomes = ''
 
     dungeon = mapping.Dungeon(ROWS, COLUMNS, 3)
+    player = Human (name, dungeon.find_free_tile())
+    gnomes = Gnome ('Gnome', dungeon.find_free_tile())
     # Agregarle cosas al dungeon, cosas que no se creen automáticamente al crearlo (por ejemplo, ya se crearon las escaleras).
     dungeon.add_item(pickaxe, 1)
+    dungeon.add_item(gnomes , 1)
 
     turns = 0
     key = ''
@@ -46,7 +48,7 @@ if __name__ == "__main__":
             actions.move(dungeon, player, key, pickaxe_tool)
         
         #no funciona
-        if dungeon.get_items(player.loc()) == mapping.STAIR_UP:
+        if dungeon.loc(player.loc()) == mapping.STAIR_UP:
             actions.climb_stair(dungeon, player)
         if dungeon.loc(player.loc()) == mapping.STAIR_DOWN:
             actions.descend_stair(dungeon, player)

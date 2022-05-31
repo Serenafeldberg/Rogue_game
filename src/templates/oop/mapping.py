@@ -1,5 +1,6 @@
 import random
-from typing import Optional
+from typing import Optional, Tuple, Set, List
+from copy import copy
 
 import player
 import items
@@ -174,10 +175,18 @@ class Level:
             return True
         return False
 
+    #Find path
+    '''
     def are_connected(self, initial: Location, end: Location) -> bool:
         """Check if there is walkable path between initial location and end location."""
-        # completar
-        raise NotImplementedError
+        return search_path (self.rows, self.columns, initial, end, set())
+    
+    def search_path (self, rows: int, cols: int , current_point: Location, to_point: Location, visited: Set):
+        if current_point == to_point:
+            return True
+        
+        found = False
+    '''
 
     def get_path(self, initial: Location, end: Location) -> bool:
         """Return a sequence of locations between initial location and end location, if it exits."""
