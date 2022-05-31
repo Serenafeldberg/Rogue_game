@@ -41,6 +41,12 @@ if __name__ == "__main__":
 
         # read key
         key = magic.read_single_keypress()[0]
+        if key == 'b':
+            #si el gnomo esta lo suficientemente cerca, que el humano pueda atacar
+            x = Human.loc()
+            z = Gnome.loc()
+            if abs(x[0]-z[0]) <= 1 and abs(x[1]-z[1]) <= 1:
+                actions.attack()
         if key == 'p':
             item_list = actions.pickup(dungeon, player)
             for it in item_list:
