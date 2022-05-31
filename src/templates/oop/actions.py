@@ -19,6 +19,7 @@ def clip(value: numeric, minimum: numeric, maximum: numeric) -> numeric:
 
 
 def attack(dungeon, player): # completar
+    #if the human has weapon gnome dies, else takes away hp from gnome
     if Human.weapon == True:
         Gnome.hp = 0
         Gnome.set_is_alive()
