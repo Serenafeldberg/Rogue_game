@@ -19,8 +19,12 @@ def clip(value: numeric, minimum: numeric, maximum: numeric) -> numeric:
 
 
 def attack(dungeon, player): # completar
-    # completar
-    raise NotImplementedError
+    if Human.weapon == True:
+        Gnome.hp = 0
+        Gnome.set_is_alive()
+    else:
+        Gnome.hp -= 25
+        Gnome.set_is_alive()
 
 
 def move_to(dungeon: mapping.Dungeon, player: player.Player, location: tuple[numeric, numeric]):
