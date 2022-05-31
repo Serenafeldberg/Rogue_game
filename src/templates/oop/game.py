@@ -6,8 +6,9 @@ import magic
 import random
 from human import Human
 from gnome import Gnome
-from items import Item, PickAxe, Amulet
+from items import Item, PickAxe, Amulet, Sword
 import actions
+from templates.oop.items import Sword
 
 
 ROWS = 25
