@@ -6,3 +6,8 @@ class Gnome (Player):
 
         self.alive = True
         self.face = 'G'
+        def set_is_alive(self):
+        if self.hp == 0:
+            return False
+        else:
+            return True
