@@ -21,5 +21,6 @@ class Human(Player):
         self.alive = False
 
     def has_sword(self):
+        
         # completar
         raise NotImplementedError

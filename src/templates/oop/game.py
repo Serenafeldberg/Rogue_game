@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+from curses.ascii import SO
 import time
+from tkinter import SW
 import mapping
 import magic
 
@@ -8,7 +10,6 @@ from human import Human
 from gnome import Gnome
 from items import Item, PickAxe, Amulet, Sword
 import actions
-from templates.oop.items import Sword
 
 
 ROWS = 25
@@ -20,6 +21,7 @@ if __name__ == "__main__":
     level = 0
     name = input("Enter name: ")
     pickaxe = PickAxe ('pickaxe', ')')
+    sword = Sword("Sword", '/', 10, 50)
 
     # initial locations may be random generated
 
@@ -30,11 +32,13 @@ if __name__ == "__main__":
     # Agregarle cosas al dungeon, cosas que no se creen automáticamente al crearlo (por ejemplo, ya se crearon las escaleras).
     dungeon.add_item(pickaxe, 1)
     dungeon.add_item (amulet, 3)
+    dungeon.add_item(sword , random.randint(1,3))
 
     turns = 0
     key = ''
     pickaxe_tool = False
-    amulet_tool = False
+    amulet_treasure = False
+    sword_weapon = False
     while dungeon.level >= 0 and key != 'q':
         turns += 1
         # render map
@@ -54,7 +58,9 @@ if __name__ == "__main__":
                 if isinstance(it, PickAxe):
                     pickaxe_tool = True
                 if isinstance(it, Amulet):
-                    amulet_tool = True
+                    amulet_treasure = True
+                if isinstance (it, Sword):
+                    sword_weapon = True
         if key == 'w' or key == 's' or key == 'a' or key == 'd':
             actions.move(dungeon, player, key, pickaxe_tool)
         
@@ -65,7 +71,7 @@ if __name__ == "__main__":
 
         actions.move_gnome(dungeon, gnomes)
 
-        if amulet_tool and dungeon.level == 1:
+        if amulet_treasure and dungeon.level == 1:
             #Gano el juego porque subio al nivel 1 con el amuleto
             break
           
