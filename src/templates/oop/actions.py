@@ -18,6 +18,13 @@ def clip(value: numeric, minimum: numeric, maximum: numeric) -> numeric:
         return maximum
     return value
 
+def possible_attack(x,z):
+    #it returns if an attack is possible
+    #x:Human loc, z:Gnome loc
+    if abs(x[0]-z[0]) <= 1 and abs(x[1]-z[1]) <= 1:
+        return True
+    else:
+        False
 
 def attack(dungeon: mapping.Dungeon, player: player.Player, gnome: gnome.Gnome): # completar
     #if the human has weapon gnome dies, else takes away hp from gnome
