@@ -24,7 +24,7 @@ def possible_attack(x,z):
     if abs(x[0]-z[0]) <= 1 and abs(x[1]-z[1]) <= 1:
         return True
     else:
-        False
+        return False
 
 def attack(dungeon: mapping.Dungeon, player: player.Player, gnome: gnome.Gnome): # completar
     #if the human has weapon gnome dies, else takes away hp from gnome
