@@ -48,10 +48,10 @@ if __name__ == "__main__":
         key = magic.read_single_keypress()[0]
         if key == 'b':
             #si el gnomo esta lo suficientemente cerca, que el humano pueda atacar
-            x = Human.loc()
-            z = Gnome.loc()
-            if abs(x[0]-z[0]) <= 1 and abs(x[1]-z[1]) <= 1:
-                actions.attack()
+        x = Human.loc()
+        z = Gnome.loc()
+        if possible_attack(x,z) == True:
+            actions.attack()
         if key == 'p':
             item_list = actions.pickup(dungeon, player)
             for it in item_list:
@@ -68,8 +68,11 @@ if __name__ == "__main__":
             actions.climb_stair(dungeon, player)
         if dungeon.loc(player.loc()) == mapping.STAIR_DOWN:
             actions.descend_stair(dungeon, player)
-
-        actions.move_gnome(dungeon, gnomes)
+        
+        if possible_attack(x,z) == True:
+            Human.kill()
+        else:
+            actions.move_gnome(dungeon, gnomes)
 
         if amulet_treasure and dungeon.level == 1:
             #Gano el juego porque subio al nivel 1 con el amuleto
