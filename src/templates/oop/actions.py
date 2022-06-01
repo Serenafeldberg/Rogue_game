@@ -77,7 +77,6 @@ def climb_stair(dungeon: mapping.Dungeon, player: player.Player):
     Changes de dungeon level. (level 1 is first, and level 3 is the lowest)
     '''
     if dungeon.loc(player.loc()) == mapping.STAIR_UP:
-        print("aca")
         dungeon.level -= 1
     loc = dungeon.index(mapping.STAIR_DOWN)
     player.move_to (loc)
