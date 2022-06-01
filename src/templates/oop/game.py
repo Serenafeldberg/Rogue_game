@@ -70,7 +70,9 @@ if __name__ == "__main__":
             actions.descend_stair(dungeon, player)
         
         if possible_attack(x,z) == True:
+            #si el gnomo mata al humano, se termina el juego
             Human.kill()
+            break
         else:
             actions.move_gnome(dungeon, gnomes)
 
