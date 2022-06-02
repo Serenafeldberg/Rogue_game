@@ -4,50 +4,46 @@ import random
 import mapping
 import player
 import gnome
-from human import Human
+import human
 import items
 
 
 numeric = Union[int, float]
 
-
-def clip(value: numeric, minimum: numeric, maximum: numeric) -> numeric:
-    if value < minimum:
-        return minimum
-    if value > maximum:
-        return maximum
-    return value
-
 def possible_attack(x,z):
-    #it returns if an attack is possible
-    #x:Human loc, z:Gnome loc
+    '''
+    It returns if an attack is possible depending on the distance
+
+    -> x: Human location
+    -> z: Gnome location
+    '''
     if abs(x[0]-z[0]) <= 1 and abs(x[1]-z[1]) <= 1:
         return True
     else:
         return False
 
-def attack(dungeon: mapping.Dungeon, gnome: gnome.Gnome): # completar
-    #if the human has weapon gnome dies, else takes away hp from gnome
-    if Human.weapon == True:
+def attack(human: human.Human, gnome: gnome.Gnome):
+    '''
+    If the human has weapon, the gnome dies, else takes away hp from the gnome
+
+    -> human: human player
+    -> gnome: gnome player
+    '''
+    if human.get_sword() == True:
         gnome.hp = 0
         gnome.set_is_alive()
     else:
         gnome.hp -= 25
         gnome.set_is_alive()
 
-
-def move_to(dungeon: mapping.Dungeon, player: player.Player, location: tuple[numeric, numeric]):
-    # completar
-    raise NotImplementedError
-
 def move (dungeon: mapping.Dungeon, player: player.Player, key, pickaxe_tool = False):
     '''
     Moves the player depending on the key pressed.
 
-    -> s: down
-    -> d: right
-    -> a: left
-    -> w: up
+    -> dungeon: instance of a dungeon map
+    -> player: player (it can be either the human or the gnome)
+    -> key: key pressed (s: down, d: right, a: left, w: up)
+    -> pickaxe_tool: True if the human has the pickaxe, else false.
     '''
     dic = {'s': (0,1), 'w': (0,-1), 'a': (-1,0), 'd': (1,0)}
     loc = player.loc()
@@ -62,6 +58,9 @@ def move (dungeon: mapping.Dungeon, player: player.Player, key, pickaxe_tool = F
 def move_gnome (dungeon: mapping.Dungeon, gnome: gnome.Gnome):
     '''
     Moves the gnome randomly
+
+    -> dungeon: instance of a dungeon map
+    -> gnome: Gnome player
     '''
     dic = {'s': (0,1), 'w': (0,-1), 'a': (-1,0), 'd': (1,0)}
     directions = ['s','w','a','d']
@@ -75,6 +74,9 @@ def move_gnome (dungeon: mapping.Dungeon, gnome: gnome.Gnome):
 def climb_stair(dungeon: mapping.Dungeon, player: player.Player):
     '''
     Changes de dungeon level. (level 1 is first, and level 3 is the lowest)
+
+    -> dungeon: instance of a dungeon map
+    -> player: player (it can be either the human or the gnome)
     '''
     if dungeon.loc(player.loc()) == mapping.STAIR_UP:
         dungeon.level -= 1
@@ -83,6 +85,12 @@ def climb_stair(dungeon: mapping.Dungeon, player: player.Player):
     return dungeon
 
 def descend_stair(dungeon: mapping.Dungeon, player: player.Player):
+    '''
+    Changes the dungeon level
+
+    -> dungeon: instance of a dungeon map
+    -> player: player (it can be either the human or the gnome)
+    '''
     if dungeon.loc(player.loc()) == mapping.STAIR_DOWN:
         dungeon.level += 1
     loc = dungeon.index(mapping.STAIR_UP)
@@ -90,6 +98,12 @@ def descend_stair(dungeon: mapping.Dungeon, player: player.Player):
     return dungeon
 
 def pickup(dungeon: mapping.Dungeon, player: player.Player):
+    '''
+    Allows the player to pick up items
+
+    -> dungeon: instance of a dungeon map
+    -> player: player (it can be either the human or the gnome)
+    '''
     xy = player.loc()
     item_list = dungeon.get_items(xy)
     return item_list

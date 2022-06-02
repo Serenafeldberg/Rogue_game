@@ -12,6 +12,5 @@ class Gnome (Player):
     def get_alive(self):
         return self.alive
     def gnome_dies(self):
-        self.face = None
-        self.x,self.y = None
+        self.face = ' '
           

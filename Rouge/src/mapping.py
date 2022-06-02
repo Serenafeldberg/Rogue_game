@@ -118,7 +118,7 @@ class Level:
             for j, cell in enumerate(row):
                 if (j, i) == player.loc():
                     print(player.face, end='')
-                elif (j, i) == gnome.loc(): #and gnome alive
+                elif (j, i) == gnome.loc(): 
                     print(gnome.face, end = "")
                 elif (i, j) in self.items:
                     print(self.items[(i, j)][0].face, end='')
@@ -286,6 +286,8 @@ class Dungeon:
         if 0 < level <= len(self.dungeon):
             self.dungeon[level - 1].add_item(item, xy)
 
+        return xy
+
     def loc(self, xy: Location) -> Tile:
         """Get the tile type at a give location."""
         return self.dungeon[self.level].loc(xy)
@@ -307,3 +309,6 @@ class Dungeon:
     def is_free(self, xy: Location) -> bool:
         """NOT IMPLEMENTED. Check if a given location is free of other entities. See Level.is_free()."""
         return self.dungeon[self.level].is_free(xy)
+
+    def are_conneted (self, initial: Location, end: Location):
+        return self.dungeon[self.level].are_connected(initial, end)
