@@ -48,9 +48,14 @@ if __name__ == "__main__":
 
         # read key
         key = magic.read_single_keypress()[0]
+        if key == 'b' and actions.possible_attack(x,z) == True:
+            actions.attack()
+            if Gnome.set_is_alive() == False:
+                Gnome.gnome_dies()
+        '''
         if key == 'b':
             #si el gnomo esta lo suficientemente cerca, que el humano pueda atacar
-           
+        '''
         '''
         if actions.possible_attack(x,z) == True:
             actions.attack()
