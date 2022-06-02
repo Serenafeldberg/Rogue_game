@@ -20,7 +20,7 @@ class Human(Player):
         self.hp = 0
         self.alive = False
 
-    def has_sword(self):
-        
-        # completar
-        raise NotImplementedError
+    def has_sword(self, sword):
+        if sword:
+            self.weapon = True
+        return self.weapon

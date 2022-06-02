@@ -149,7 +149,6 @@ class Level:
             except ValueError:
                 pass
         raise ValueError
-
     def loc(self, xy: Location) -> Tile:
         """Get the tile type at a give location."""
         j, i = xy

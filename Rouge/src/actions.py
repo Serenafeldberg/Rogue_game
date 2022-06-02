@@ -26,7 +26,7 @@ def possible_attack(x,z):
     else:
         return False
 
-def attack(dungeon: mapping.Dungeon, player: player.Player, gnome: gnome.Gnome): # completar
+def attack(dungeon: mapping.Dungeon, gnome: gnome.Gnome): # completar
     #if the human has weapon gnome dies, else takes away hp from gnome
     if Human.weapon == True:
         gnome.hp = 0

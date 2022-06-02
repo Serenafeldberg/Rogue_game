@@ -9,4 +9,10 @@ class Gnome (Player):
     def set_is_alive(self):
         if self.hp == 0:
             self.alive = False
+
+    def get_alive(self):
+        return self.alive
+    def gnome_dies(self):
+        self.face = None
+        self.x,self.y = None
           

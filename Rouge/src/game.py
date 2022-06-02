@@ -46,14 +46,6 @@ if __name__ == "__main__":
 
         # read key
         key = magic.read_single_keypress()[0]
-        if key == 'b':
-            #si el gnomo esta lo suficientemente cerca, que el humano pueda atacar
-            x = Human.loc()
-            z = Gnome.loc()
-        '''
-        if actions.possible_attack(x,z) == True:
-            actions.attack()
-        '''
         if key == 'p':
             item_list = actions.pickup(dungeon, player)
             for it in item_list:
@@ -63,24 +55,34 @@ if __name__ == "__main__":
                     amulet_treasure = True
                 if isinstance (it, Sword):
                     sword_weapon = True
+        
+        #si el gnomo esta lo suficientemente cerca, que el humano pueda atacar
+        x = player.loc()
+        z = gnomes.loc()
+        if key == 'b' and actions.possible_attack(x,z) == True:
+                actions.attack(dungeon, gnomes)
+                if gnomes.set_is_alive() == False:
+                    gnomes.gnome_dies()
         if key == 'w' or key == 's' or key == 'a' or key == 'd':
             actions.move(dungeon, player, key, pickaxe_tool)
         
         if dungeon.loc(player.loc()) == mapping.STAIR_UP:
-            actions.climb_stair(dungeon, player)
+            if dungeon.level > 0:
+                actions.climb_stair(dungeon, player)
         elif dungeon.loc(player.loc()) == mapping.STAIR_DOWN:
             actions.descend_stair(dungeon, player)
 
-        '''
+
         if actions.possible_attack(x,z) == True:
             #si el gnomo mata al humano, se termina el juego
-            Human.kill()
+            player.kill()
+            print("The gnome has killed you")
             break
         else:
-        '''
-        actions.move_gnome(dungeon, gnomes)
+            actions.move_gnome(dungeon, gnomes)
         
-        if amulet_treasure and dungeon.level < 0:
+        if amulet_treasure and dungeon.level == 0 and dungeon.loc(player.loc()) == mapping.STAIR_UP:
+            print("Congratulations! you won")
             #Gano el juego porque subio al nivel 1 con el amuleto
             break
           
