@@ -43,13 +43,14 @@ if __name__ == "__main__":
         turns += 1
         # render map
         dungeon.render(player, gnomes)
+         x = Human.loc()
+         z = Gnome.loc()
 
         # read key
         key = magic.read_single_keypress()[0]
         if key == 'b':
             #si el gnomo esta lo suficientemente cerca, que el humano pueda atacar
-            x = Human.loc()
-            z = Gnome.loc()
+           
         '''
         if actions.possible_attack(x,z) == True:
             actions.attack()
