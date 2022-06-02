@@ -177,19 +177,52 @@ class Level:
         if self.tiles[x][y] is AIR:
             return True
         return False
-
-    #Find path
-    '''
+    
     def are_connected(self, initial: Location, end: Location) -> bool:
         """Check if there is walkable path between initial location and end location."""
-        return search_path (self.rows, self.columns, initial, end, set())
+        return self.search_path (initial, end, set())
     
-    def search_path (self, rows: int, cols: int , current_point: Location, to_point: Location, visited: Set):
+    def search_path (self, current_point: Location, to_point: Location, visited: Set):
         if current_point == to_point:
             return True
         
         found = False
-    '''
+        for point in self.get_neighbous( current_point):
+            if self.is_available (visited, point):
+                visited.add (point)
+                current_visited = copy (visited)
+                found = self.search_path ( point, to_point, current_visited)
+            if found:
+                break
+
+        return found
+
+    def get_neighbous (self, point ):
+        directions = {'0': [1,0], '90': [0,-1], '180': [-1,0], '270': [0,1]}
+        neighbours = []
+        for deltas in directions.values():
+            possible_n = (point[0] + deltas[0], point[1] + deltas[1])
+            if self.is_inisde_map (possible_n):
+                neighbours.append(possible_n)
+
+        return neighbours
+
+    def is_inisde_map (self, point) -> bool:
+        if point[0] < 0 or point[0] >= self.columns:
+            return False
+        if point[1] < 0 or point[1] >= self.rows:
+            return False
+
+        return True
+
+    def is_available (self, visited, point):
+        if point in visited:
+            return False
+
+        if self.loc((point[0], point[1])) != AIR:
+            return False
+
+        return True
 
     def get_path(self, initial: Location, end: Location) -> bool:
         """Return a sequence of locations between initial location and end location, if it exits."""
