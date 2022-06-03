@@ -1,5 +1,6 @@
 from typing import Union
 import random
+import math
 
 import mapping
 import player
@@ -55,7 +56,7 @@ def move (dungeon: mapping.Dungeon, player: player.Player, key, pickaxe_tool = F
             dungeon.dig(new_loc)
             player.move_to(new_loc)
 
-def move_gnome (dungeon: mapping.Dungeon, gnome: gnome.Gnome):
+def move_gnome_ (dungeon: mapping.Dungeon, gnome: gnome.Gnome):
     '''
     Moves the gnome randomly
 
@@ -70,6 +71,30 @@ def move_gnome (dungeon: mapping.Dungeon, gnome: gnome.Gnome):
     if (0<=new_loc[0]< dungeon.columns and 0<=new_loc[1]< dungeon.rows):
         if dungeon.is_walkable(new_loc):
             gnome.move_to(new_loc)
+
+def move_gnome (dungeon: mapping.Dungeon, gnome: gnome.Gnome, player: player.Player):
+    dic = {4: (0,1), 2: (0,-1), 3: (-1,0), 0: (1,0), 1: (1,0)}
+    dire = [0, 90, 180, 270, 360]
+    angle_list = []
+    loc_g = gnome.loc()
+    loc_p = player.loc()
+    
+    angle = math.atan2(loc_p[1]-loc_g[1] , loc_p[0] - loc_g[0]) * (180/3.14)
+
+    print (angle)
+    if angle < 0:
+        angle += 360
+    for ang in dire:
+        angle_list.append(abs(angle-ang))
+
+    print(angle_list)
+    index_nearest_angle = angle_list.index(min(angle_list))
+    print(index_nearest_angle)
+    new_loc = (loc_g[0]+dic[index_nearest_angle][0], loc_g[1]+dic[index_nearest_angle][1])
+    if (0<=new_loc[0]< dungeon.columns and 0<=new_loc[1]< dungeon.rows):
+        if dungeon.is_walkable(new_loc):
+            gnome.move_to(new_loc)
+    
 
 def climb_stair(dungeon: mapping.Dungeon, player: player.Player):
     '''

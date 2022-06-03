@@ -80,7 +80,7 @@ if __name__ == "__main__":
                 print("The gnome has killed you")
                 break
         if gnomes.get_alive():
-            actions.move_gnome(dungeon, gnomes)
+            actions.move_gnome(dungeon, gnomes, player)
         
         if amulet_treasure and dungeon.level == 0 and dungeon.loc(player.loc()) == mapping.STAIR_UP:
             print("Congratulations! you won")
