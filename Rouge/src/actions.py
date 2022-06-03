@@ -2,6 +2,8 @@ from typing import Union
 import random
 from math import atan2
 
+from certifi import where
+
 import mapping
 import player
 import gnome
@@ -57,12 +59,12 @@ def move (dungeon: mapping.Dungeon, player: player.Player, key, pickaxe_tool = F
             player.move_to(new_loc)
 '''
 def move_gnome_ (dungeon: mapping.Dungeon, gnome: gnome.Gnome):
-    '''
+    
     Moves the gnome randomly
 
     -> dungeon: instance of a dungeon map
     -> gnome: Gnome player
-    '''
+    
     dic = {'s': (0,1), 'w': (0,-1), 'a': (-1,0), 'd': (1,0)}
     directions = ['s','w','a','d']
     key = random.choice(directions)
@@ -100,7 +102,7 @@ def gnome_chase(x, y):
     x = player loc
     y = human loc
     '''
-    return atan2((x[1]-y[1]),(x[0]-y[0])) * 180/3.14
+    return atan2((x[1]-y[1]),(x[0]-y[0])) * (180/3.14)
 
 def where_to(x):
     '''
@@ -108,13 +110,14 @@ def where_to(x):
     returns a tuple of direction
     '''
     d = [(-1,0),(0,-1),(1,0),(0,1)]
-    if x <= -135 and x < 45:
+    print(x)
+    if x >= 135 and x < 225 or (x>= -225 and x < -135):
         return d[0]
-    if x >= 45 and x < 135:
+    if x >= 225 and x < 315 or (x >= -135 and x < -45):
         return d[1]
-    if x >=135 and x >= 180 or x > -45 and x <= -1:
+    if (x >= 315 and x < 360) or (x > 0 and x < 45) or (x >= -45 and x <= 0) or (x>= -360 and x < -315):
         return d[2]
-    if x > -135 and x <= -45:
+    if x >= 45 and x < 135 or (x >= -315 and x < -225):
         return d[3]
 
 
@@ -125,6 +128,19 @@ def move_gnome(x,z):
     returns gnome new location
     '''
     return (x[0]+ z[0],x[1] +z[1])
+
+def gnome_move (dungeon: mapping.Dungeon, player: player.Player, gnome: gnome.Gnome):
+    new = where_to(gnome_chase(player.loc(), gnome.loc()))
+    loc = gnome.loc()
+    print(new)
+    print(loc)
+    new_loc = move_gnome(loc, new)
+    print(new_loc)
+    if (0<=new_loc[0]< dungeon.columns and 0<=new_loc[1]< dungeon.rows):
+        if dungeon.is_walkable(new_loc):
+            gnome.move_to(new_loc)
+
+
     
 
 def climb_stair(dungeon: mapping.Dungeon, player: player.Player):
