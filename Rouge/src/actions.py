@@ -88,7 +88,6 @@ def where_to(x):
     returns a tuple of direction
     '''
     d = [(-1,0),(0,-1),(1,0),(0,1)]
-    print(x)
     if x >= 135 and x < 225 or (x>= -225 and x < -135):
         return d[0]
     if x >= 225 and x < 315 or (x >= -135 and x < -45):
@@ -110,10 +109,7 @@ def gnome_direction(x,z):
 def gnome_move (dungeon: mapping.Dungeon, player: player.Player, gnome: gnome.Gnome):
     new = where_to(gnome_chase(player.loc(), gnome.loc()))
     loc = gnome.loc()
-    print(new)
-    print(loc)
     new_loc = gnome_direction(loc, new)
-    print(new_loc)
     if (0<=new_loc[0]< dungeon.columns and 0<=new_loc[1]< dungeon.rows):
         if dungeon.is_walkable(new_loc):
             gnome.move_to(new_loc)
