@@ -1,6 +1,6 @@
 from typing import Union
 import random
-import math
+from math import atan2
 
 import mapping
 import player
@@ -55,7 +55,7 @@ def move (dungeon: mapping.Dungeon, player: player.Player, key, pickaxe_tool = F
         if pickaxe_tool and dungeon.loc(new_loc) == mapping.WALL:
             dungeon.dig(new_loc)
             player.move_to(new_loc)
-
+'''
 def move_gnome_ (dungeon: mapping.Dungeon, gnome: gnome.Gnome):
     '''
     Moves the gnome randomly
@@ -94,14 +94,14 @@ def move_gnome (dungeon: mapping.Dungeon, gnome: gnome.Gnome, player: player.Pla
     if (0<=new_loc[0]< dungeon.columns and 0<=new_loc[1]< dungeon.rows):
         if dungeon.is_walkable(new_loc):
             gnome.move_to(new_loc)
- 
+ '''
 def gnome_chase(x, y):
     '''
     x = player loc
     y = human loc
     '''
     return atan2((x[1]-y[1]),(x[0]-y[0])) * 180/3.14
-print(gnome_chase(x,y))
+
 def where_to(x):
     '''
     x = gnome_chase(x,y)
@@ -116,7 +116,7 @@ def where_to(x):
         return d[2]
     if x > -135 and x <= -45:
         return d[3]
-print(where_to(gnome_chase(x,y)))
+
 
 def move_gnome(x,z):
     '''
