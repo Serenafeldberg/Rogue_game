@@ -115,11 +115,7 @@ def where_to(x):
         return d[0]
     if x >= 225 and x < 315 or (x >= -135 and x < -45):
         return d[1]
-<<<<<<< HEAD
     if (x >= 315 and x < 360) or (x > 0 and x < 45) or (x >= -45 and x <= 0) or (x>= -360 and x < -315):
-=======
-    if x >=135 and x <= 180 or x > -45 and x <= -1:
->>>>>>> 2b92ba94c00c84675316d7ac99a81e0dec9ca056
         return d[2]
     if x >= 45 and x < 135 or (x >= -315 and x < -225):
         return d[3]
