@@ -94,6 +94,37 @@ def move_gnome (dungeon: mapping.Dungeon, gnome: gnome.Gnome, player: player.Pla
     if (0<=new_loc[0]< dungeon.columns and 0<=new_loc[1]< dungeon.rows):
         if dungeon.is_walkable(new_loc):
             gnome.move_to(new_loc)
+ 
+def gnome_chase(x, y):
+    '''
+    x = player loc
+    y = human loc
+    '''
+    return atan2((x[1]-y[1]),(x[0]-y[0])) * 180/3.14
+print(gnome_chase(x,y))
+def where_to(x):
+    '''
+    x = gnome_chase(x,y)
+    returns a tuple of direction
+    '''
+    d = [(-1,0),(0,-1),(1,0),(0,1)]
+    if x <= -135 and x < 45:
+        return d[0]
+    if x >= 45 and x < 135:
+        return d[1]
+    if x >=135 and x >= 180 or x > -45 and x <= -1:
+        return d[2]
+    if x > -135 and x <= -45:
+        return d[3]
+print(where_to(gnome_chase(x,y)))
+
+def move_gnome(x,z):
+    '''
+    x = actual gnome location
+    z = tuple with direction
+    returns gnome new location
+    '''
+    return (x[0]+ z[0],x[1] +z[1])
     
 
 def climb_stair(dungeon: mapping.Dungeon, player: player.Player):
