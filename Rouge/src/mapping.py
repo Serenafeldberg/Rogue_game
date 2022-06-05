@@ -1,4 +1,5 @@
 import random
+from readline import get_endidx
 from typing import Optional, Tuple, Set, List
 from copy import copy
 import gnome
@@ -106,6 +107,9 @@ class Level:
         items.append(item)
         self.items[(i, j)] = items
 
+        return(j , i)
+
+
     def render(self, player: player.Player, gnome: gnome.Gnome):
         """Draw the map onto the terminal, including player and items. Player must have a loc() method, returning its
         location, and a face attribute. All items in the map must have a face attribute which is going to be shown. If
@@ -176,58 +180,6 @@ class Level:
         if self.tiles[x][y] is AIR:
             return True
         return False
-    
-    def are_connected(self, initial: Location, end: Location) -> bool:
-        """Check if there is walkable path between initial location and end location."""
-        return self.search_path (initial, end, set())
-    
-    def search_path (self, current_point: Location, to_point: Location, visited: Set):
-        if current_point == to_point:
-            return True
-        
-        found = False
-        for point in self.get_neighbous( current_point):
-            if self.is_available (visited, point):
-                visited.add (point)
-                current_visited = copy (visited)
-                found = self.search_path ( point, to_point, current_visited)
-            if found:
-                break
-
-        return found
-
-    def get_neighbous (self, point ):
-        directions = {'0': [1,0], '90': [0,-1], '180': [-1,0], '270': [0,1]}
-        neighbours = []
-        for deltas in directions.values():
-            possible_n = (point[0] + deltas[0], point[1] + deltas[1])
-            if self.is_inisde_map (possible_n):
-                neighbours.append(possible_n)
-
-        return neighbours
-
-    def is_inisde_map (self, point) -> bool:
-        if point[0] < 0 or point[0] >= self.columns:
-            return False
-        if point[1] < 0 or point[1] >= self.rows:
-            return False
-
-        return True
-
-    def is_available (self, visited, point):
-        if point in visited:
-            return False
-
-        if self.loc((point[0], point[1])) != AIR:
-            return False
-
-        return True
-
-    def get_path(self, initial: Location, end: Location) -> bool:
-        """Return a sequence of locations between initial location and end location, if it exits."""
-        # completar
-        raise NotImplementedError
-
 
 class Dungeon:
     """Dungeon(rows: int, columns: int, levels: int = 3) -> Dungeon
@@ -284,9 +236,9 @@ class Dungeon:
         if level is None:
             level = self.level + 1
         if 0 < level <= len(self.dungeon):
-            self.dungeon[level - 1].add_item(item, xy)
+            loc = self.dungeon[level - 1].add_item(item, xy)
 
-        return xy
+        return loc
 
     def loc(self, xy: Location) -> Tile:
         """Get the tile type at a give location."""
@@ -310,5 +262,84 @@ class Dungeon:
         """NOT IMPLEMENTED. Check if a given location is free of other entities. See Level.is_free()."""
         return self.dungeon[self.level].is_free(xy)
 
-    def are_conneted (self, initial: Location, end: Location):
-        return self.dungeon[self.level].are_connected(initial, end)
+    def are_connected(self, initial: Location, end: Location) -> bool:
+        """Check if there is walkable path between initial location and end location.
+        
+        -> initial: initial location
+        -> end: end location
+        """
+        return self.search_path (initial, end, set())
+    
+    def search_path (self, current_point: Location, to_point: Location, visited: Set) -> bool:
+        '''
+        Given 2 points in the dungeon instance, checks if there is a walkable path between them
+
+        -> current_point: tuple (row, col) that reprsents the staring point in the dungeon instance
+        -> to_point: tuple (row, col) that represents the ending point in the dungeon instance
+        -> visited: a Set of points al ready visited
+        
+        '''
+        
+        found = False
+        queue_of_points = self.get_neighbous(current_point)
+
+        while not found and len(queue_of_points) > 0:
+
+            current = queue_of_points.pop(0)
+            if current in visited:
+                continue
+                
+            visited.add(current)
+
+            if current == to_point:
+                found = True
+
+            for p in self.get_neighbous(current):
+                if self.is_available(visited, p):
+                    queue_of_points.append(p)
+
+        return found
+
+    def get_neighbous (self, point ) -> List[Tuple[int, int]]:
+        '''
+        Given a point in the map, it returns a list with the surrounding locations
+
+        -> point: tuple (row, col) representing a location in the dungeon instance
+        '''
+        directions = {'0': [1,0], '90': [0,-1], '180': [-1,0], '270': [0,1]}
+        neighbours = []
+        for deltas in directions.values():
+            possible_n = (point[0] + deltas[0], point[1] + deltas[1])
+            if self.is_inisde_map (possible_n):
+                neighbours.append(possible_n)
+
+        return neighbours
+
+    def is_inisde_map (self, point) -> bool:
+        '''
+        Given a point, it checks if it is inside the dungeon map
+
+        -> point: tuple (row, col) representing a location in the dungeon map
+        '''
+        if point[0] < 0 or point[0] >= self.columns:
+            return False
+        if point[1] < 0 or point[1] >= self.rows:
+            return False
+
+        return True
+
+    def is_available (self, visited, point) -> bool:
+        '''
+        Given a point, it checks if the location is empty and if it is possible to use it.
+
+        -> visited: Set of locations that where already used
+        -> point: Tuple (row, col) representin a location in the dungeon map 
+        '''
+        if point in visited:
+            return False
+
+        if self.loc((point[0], point[1])) != AIR:
+            return False
+
+        return True
+    

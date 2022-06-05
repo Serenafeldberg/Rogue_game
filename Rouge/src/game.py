@@ -27,7 +27,11 @@ if __name__ == "__main__":
     dungeon = mapping.Dungeon(ROWS, COLUMNS, 3)
     pickaxe_loc = dungeon.add_item(pickaxe, 1)
     player = Human (name, dungeon.find_free_tile())
+    while not dungeon.are_connected(player.loc(), pickaxe_loc):
+        player.set_loc(dungeon.find_free_tile())
     gnomes = Gnome ('Gnome', dungeon.find_free_tile())
+    while not dungeon.are_connected(gnomes.loc(), player.loc()):
+        gnomes.set_loc(dungeon.find_free_tile())
     amulet = Amulet ("Amulet", '"')
     # Agregarle cosas al dungeon, cosas que no se creen automáticamente al crearlo (por ejemplo, ya se crearon las escaleras).
     dungeon.add_item (amulet, 3)

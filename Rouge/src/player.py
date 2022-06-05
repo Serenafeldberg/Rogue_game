@@ -1,3 +1,5 @@
+from typing import Tuple
+
 class Player:
     def __init__(self, name, xy, hit_points=50):
         self.name = name
@@ -7,6 +9,9 @@ class Player:
 
     def loc(self):
         return self.x, self.y
+
+    def set_loc (self, xy: Tuple):
+        self.x, self.y = xy
 
     def move_to(self, xy):
         self.x, self.y = xy
